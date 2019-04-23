@@ -4,8 +4,17 @@ require("dotenv").config();
 // node's built in file system.
 const fs = require("fs");
 
+// requiring axios
+const axios = require("axios");
+
 // grabbing our api keys
 const keys = require("./keys.js");
+
+// spotify npm initialize
+const SpotifyPkg = require('node-spotify-api');
+
+// inquire initialize
+const inquirer = require('inquirer');
 
 const command = process.argv.shift(2);
 const question = process.argv.shift();
@@ -27,4 +36,10 @@ switch (command) {
 
     default:
 };
+
+spotify = (input) => {
+
+
+
+}
 
