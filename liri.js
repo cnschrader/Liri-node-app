@@ -11,43 +11,84 @@ const axios = require("axios");
 const keys = require("./keys.js");
 
 // spotify npm initialize
-const SpotifyPkg = require('node-spotify-api');
+const Spotify = require('node-spotify-api');
 
-// inquire initialize
-const inquirer = require('inquirer');
 
+// grabbing the data from the command line
 const command = process.argv[2];
-const question = process.argv[3];
+process.argv.splice(0, 3);
+let question = process.argv;
 
-// The intitial question that prompts the user to ask using a key phrase (maybe put this in a function, and then call that function at the very beginning of the file.)
-inquirer
-.prompt([
-{
-    type: "input",
-    message: "What would you like to ask me about? Songs? Bands? Movies?",
-    name: "prompt"
-}
-]);
 
 // switch statement that will call functions depending on the user's input. 
 switch (command) {
     case "find-on-spotify":
-    spotify();
+    spotify(question);
     break;
 
     case "find-on-omdb":
-    movies();
+    movies(question);
     break;
 
     case "find-the-band":
-    bands();
+    bands(question);
     break;
 
     default:
 };
 
-spotify = (input) => {
 
 
-}
+function movies(question) {
+question = question.join("+");
+console.log(question, 'question');
+    if(command === "find-on-omdb"){
+    
+        axios.get("http://www.omdbapi.com/?t=" + question + "&y=&plot=short&apikey=trilogy")
+        .then(
+            (response) => {
+                console.log("Title: " + response.data.Title);
+                console.log("Movie's Rating: " + response.data.imdbRating);
+                console.log("Year Released: " + response.data.Year);
+                console.log("Actors: " + response.data.Actors);
+                console.log("Language: " + response.data.Language);
+                console.log("Plot: " + response.data.Plot);
 
+            }
+        )
+    };
+
+};
+
+function bands(question) {
+    console.log(question);
+    // question = question.join(" ")
+
+    if(command === "find-the-band"){
+        axios.get("https://rest.bandsintown.com/artists/" + question + "/events?app_id=" + keys.bandsInTown)
+        .then(
+            (response) => {
+                console.log(response.name);
+            }
+        )
+
+    };
+
+};
+
+
+function spotify(question){
+    if(command === "find-on-spotify"){
+    const spotify = new Spotify({
+        id: keys.spotify,
+        secret: keys.spotify
+      })
+      .request('https://api.spotify.com/v1/tracks/' + keys.spotify)
+  .then(function(data) {
+    console.log(data); 
+  })
+  .catch(function(err) {
+    console.error('Error occurred: ' + err); 
+  });
+};
+};
