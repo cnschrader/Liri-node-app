@@ -34,7 +34,7 @@ switch (command) {
     bands(question);
     break;
 
-    default:
+    default: console.log("nope! type one of the commands")
 };
 
 
@@ -62,23 +62,23 @@ console.log(question, 'question');
 
 function bands(question) {
     console.log(question);
-    // question = question.join(" ")
+    question = question.join(" ")
 
-    // if(command === "find-the-band"){
-        axios.get("https://rest.bandsintown.com/artists/" + question + "/events?app_id=" + keys.bandsInTown)
+    
+        axios.get("https://rest.bandsintown.com/artists/" + question + "/events?app_id=" + keys.bandsInTown.id)
         .then(
             (response) => {
-                console.log(response);
+                console.log(response.data[0]);
             }
         )
 
-    // };
+    
 
 };
 
 
 function spotify(question){
-    // if(command === "find-on-spotify"){
+    
     const spotify = new Spotify({
         id: keys.spotify.id,
         secret: keys.spotify.secret
@@ -87,14 +87,5 @@ function spotify(question){
       spotify.search({type: "track", query: question.join(" ")},function(err, data) {
         console.log(JSON.stringify(data, null, 2)); 
       })
-      /*
-      .request('https://api.spotify.com/v1/tracks/' + question + keys.spotify)
-  .then(function(data) {
-    console.log(data); 
-  })
-  .catch(function(err) {
-    console.error('Error occurred: ' + err); 
-  });
-  */
-//};
+ 
 };
